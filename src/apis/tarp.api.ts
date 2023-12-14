@@ -1,38 +1,23 @@
-import { AxiosError } from 'axios';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { catchError, firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
+import { HttpAPI } from './http.api';
 
 @Injectable()
-export class TarpAPI {
-  readonly endpoint: string = this.config.get('TARP_SERVER');
-  readonly token: string = this.config.get('TARP_TOKEN');
-  readonly query = {
-    operationName: 'getRobots',
-    query: 'query getRobots { robot { key name }}',
-  };
-
+export class TarpAPI extends HttpAPI {
   constructor(
-    private readonly httpService: HttpService,
-    private readonly config: ConfigService,
-  ) {}
+    protected readonly httpService: HttpService,
+    protected readonly config: ConfigService,
+  ) {
+    super(httpService, config, 'TARP_SERVER', 'TARP_TOKEN');
+  }
 
   async getRobots(): Promise<any> {
-    const result = await firstValueFrom(
-      this.httpService
-        .post(this.endpoint, this.query, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        })
-        .pipe(
-          catchError((error: AxiosError) => {
-            throw `TarpAPI getRobots error: ${error.message}`;
-          }),
-        ),
-    );
+    const query = {
+      operationName: 'getRobots',
+      query: 'query getRobots { robot { key name }}',
+    };
 
-    return result.data.data.robot;
+    return this.fetchData(query);
   }
 }

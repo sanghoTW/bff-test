@@ -11,11 +11,11 @@ export class RobotService {
   ) {}
 
   async getRobots() {
-    const robotsFromTarpServer = await this.tarpAPI.getRobots();
-    const robotsFromTarasServer = await this.tarasAPI.getRobots();
+    const tarpResponse = await this.tarpAPI.getRobots();
+    const tarasResponse = await this.tarasAPI.getRobots();
 
-    const robots: RobotDto[] = robotsFromTarpServer
-      .concat(robotsFromTarasServer)
+    const robots: RobotDto[] = tarpResponse.data.robot
+      .concat(tarasResponse.data.robot)
       .map((robot) => ({
         key: robot.key,
         name: robot.name,
