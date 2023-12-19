@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { TarpAPI } from './apis/tarp.api';
-import { TarasAPI } from './apis/taras.api';
 import { RobotService } from './services/robot.service';
 import { RobotController } from './controllers/robot.controller';
 import { ConfigModule } from '@nestjs/config';
+import { RobotManager } from './manager/robot.manager';
 
 @Module({
   imports: [
@@ -14,6 +14,6 @@ import { ConfigModule } from '@nestjs/config';
     }),
   ],
   controllers: [RobotController],
-  providers: [RobotService, TarasAPI, TarpAPI],
+  providers: [TarpAPI, RobotService, RobotManager],
 })
 export class AppModule {}

@@ -1,13 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { RobotService } from 'src/services/robot.service';
 
 @Controller()
 export class RobotController {
   constructor(private readonly robotService: RobotService) {}
 
-  @Get()
-  async getRobots(): Promise<any> {
-    const robots = await this.robotService.getRobots();
-    return robots;
+  @Post('go')
+  async go(): Promise<any> {
+    return await this.robotService.go();
   }
 }

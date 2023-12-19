@@ -1,27 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { TarpAPI } from 'src/apis/tarp.api';
-import { TarasAPI } from 'src/apis/taras.api';
-import { RobotDto } from 'src/dto/robot.dto';
+import { RobotManager } from 'src/manager/robot.manager';
 
 @Injectable()
 export class RobotService {
-  constructor(
-    private readonly tarasAPI: TarasAPI,
-    private readonly tarpAPI: TarpAPI,
-  ) {}
+  constructor(private readonly robotManager: RobotManager) {}
 
-  async getRobots() {
-    const tarpResponse = await this.tarpAPI.getRobots();
-    const tarasResponse = await this.tarasAPI.getRobots();
-
-    const robots: RobotDto[] = tarpResponse.data.robot
-      .concat(tarasResponse.data.robot)
-      .map((robot) => ({
-        key: robot.key,
-        name: robot.name,
-        customData: robot.key + robot.name,
-      }));
-
-    return robots;
+  async go() {
+    return await this.robotManager.go({
+      robotKey: 'mock-robot-2ddc39d7-dd8a-4b5c-803b-b70207805330',
+      destinationId: 'c0fc26ce-af65-40c3-af4d-7a4df033f62e',
+      callback: () => {
+        console.log('>>>> callback function executed');
+      },
+    });
   }
 }
