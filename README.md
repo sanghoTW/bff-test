@@ -59,7 +59,8 @@ TARP_TOKEN = 'tarp-access-token'
 2. `robot.service.go`는 `robot.manager.go`를 호출한다.
 3. `robot.manager.go`는 `robot.api`를 호출하여 미션을 조작한다.
 4. `mission` 생성과 구독을 진행하고, 변경되는 `mission`상태에 따라서 `mission`을 실행 및 종료한다.
-5. `mission`이 종료되는 시점에 등록했던 `callback`을 호출히고 `response`로 `missionId`를 반환한다.
+5. `mission`이 종료되는 시점에 등록했던 `callback` 호출 및 구독 연결을 끊는다.
+6. `response`로 `missionId`를 반환한다.
 
 <br><br>
 
