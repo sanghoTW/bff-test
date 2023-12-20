@@ -51,7 +51,7 @@ export class TarpAPI extends API {
 
   async subscribeMission(
     missionId: string,
-    callback: (event: any, resolve: (value: unknown) => void) => void,
+    onUpdate: (event: any, resolve: (value: unknown) => void) => void,
   ): Promise<any> {
     const operation = {
       query:
@@ -61,6 +61,6 @@ export class TarpAPI extends API {
       },
     };
 
-    return this.subscribeData(operation, callback);
+    return this.subscribeData(operation, onUpdate);
   }
 }

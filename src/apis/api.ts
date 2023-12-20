@@ -38,7 +38,7 @@ export class API {
 
   async subscribeData(
     operation: Operation,
-    callback: (event: any, resolve: (value: unknown) => void) => void,
+    onUpdate: (event: any, resolve: (value: unknown) => void) => void,
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       (async () => {
@@ -46,7 +46,7 @@ export class API {
         for await (const event of subscription) {
           const { data, errors } = event;
           if (data) {
-            callback(data, resolve);
+            onUpdate(data, resolve);
           }
 
           if (errors) {
