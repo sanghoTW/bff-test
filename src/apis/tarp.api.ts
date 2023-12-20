@@ -13,18 +13,18 @@ export class TarpAPI extends API {
   }
 
   async createMission(variables): Promise<any> {
-    const query = {
+    const operation = {
       operationName: 'createMission',
       query:
         'mutation createMission($roadMapId: ID!, $request: CreateMissionInput!) { createMission(roadMapID: $roadMapId, request: $request) }',
       variables,
     };
 
-    return this.fetchData(query);
+    return this.fetchData(operation);
   }
 
   async executeMission(missionId: string): Promise<any> {
-    const query = {
+    const operation = {
       operationName: 'executeMission',
       query:
         'mutation executeMission($missionId: ID!) { executeMission(missionID: $missionId) }',
@@ -33,11 +33,11 @@ export class TarpAPI extends API {
       },
     };
 
-    return this.fetchData(query);
+    return this.fetchData(operation);
   }
 
   async terminateMission(missionId: string): Promise<any> {
-    const query = {
+    const operation = {
       operationName: 'terminateMission',
       query:
         'mutation terminateMission($missionId: ID!) { terminateMission(missionID: $missionId) }',
@@ -46,7 +46,7 @@ export class TarpAPI extends API {
       },
     };
 
-    return this.fetchData(query);
+    return this.fetchData(operation);
   }
 
   async subscribeMission(

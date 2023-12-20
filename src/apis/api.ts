@@ -57,17 +57,17 @@ export class API {
     });
   }
 
-  async fetchData(query: {
+  async fetchData(operation: {
     operationName: string;
     query: string;
   }): Promise<any> {
     const endpoint = this.config.get(this.endpointKey);
     const token = this.config.get(this.tokenKey);
-    const { operationName } = query;
+    const { operationName } = operation;
 
     const result = await firstValueFrom(
       this.httpService
-        .post(endpoint, query, {
+        .post(endpoint, operation, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
