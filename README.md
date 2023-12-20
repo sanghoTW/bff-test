@@ -1,73 +1,100 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 🍴 환경 설정
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ yarn install
+1. Node.js [설치](https://nodejs.org/en) (>=18.0.0)
+```shell
+node --version
 ```
 
-## Running the app
+2. Yarn 설치
 
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+```shell
+npm install --global yarn
 ```
 
-## Test
+3. Yarn 버전 확인
 
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+```shell
+yarn --version
 ```
 
-## Support
+<br><br>
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# 🚀 설치
 
-## Stay in touch
+1. 레포지토리 클론
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```shell
+git clone https://github.com/sanghoTW/bff-test.git
+```
 
-## License
+2. 패키지 설치
 
-Nest is [MIT licensed](LICENSE).
+```shell
+yarn install
+```
+
+3. 환경 변수 설정
+
+- 프로젝트 내부 `.env` 파일에 환경 변수(TARP 개발 서버 주소 및 토큰) 설정
+- 토큰은 `TARP Client`에 직접 로그인 후 발급받아 설정
+
+```
+WS_TARP_SERVER = 'wss://dev-tarp-server/query'
+TARP_SERVER = 'https://dev-tarp-server/query'
+TARP_TOKEN = 'tarp-access-token'
+```
+
+<br><br>
+
+# 🚨 프로젝트 구조
+- 미션: TARP에 미션을 생성해서 로봇 제어하기
+
+<br>
+
+![Alt text](image-2.png)
+
+<br>
+
+1. `robot.controller.go`는 `request`를 받고 `robot.service.go`를 호출한다.
+2. `robot.service.go`는 `robot.manager.go`를 호출한다.
+3. `robot.manager.go`는 `robot.api`를 호출하여 미션을 조작한다.
+4. `mission` 생성과 구독을 진행하고, 변경되는 `mission`상태에 따라서 `mission`을 실행 및 종료한다.
+5. `mission`이 종료되는 시점에 등록했던 `callback`을 호출히고 `response`로 `missionId`를 반환한다.
+
+<br><br>
+
+# 🎸 테스트 방법 (`GS_2` 워크스페이스 기준으로 설명)
+
+1. 목 로봇에 할당되어 있는 미션 종료
+- 테스트에 사용될 목 로봇에 미션이 할당되어 있다면 종료시켜야 합니다.
+- 종료 방법은 아래와 같습니다.
+
+```
+1. dev tarp client -> GS_2 워크스페이스 접속
+2. 로봇 클릭
+3. 수행중인 미션이 있다면 종료
+```
+<br>
+
+2. 서버 시작 
+
+```shell
+yarn start:dev
+```
+
+<br>
+
+3. 데이터 셋팅
+- `robot.service.ts`파일 내부의 `go`함수에 데이터 셋팅
+  - roadMapId
+  - robotKey
+  - destinationId
+  - callback
+- `GS_2` 워크스페이스 기준으로 데이터가 미리 셋팅되어 있습니다.
+
+<br>
+
+4. API 호출 
+- 브라우저 주소창에 `localhost:3000/go` 입력하여 `API` 호출
+- `API`가 정상적으로 완료되면 브라우저에 미션 아이디가 출력됩니다.
+- 터미널에서 구독된 미션의 상태 확인이 가능합니다.

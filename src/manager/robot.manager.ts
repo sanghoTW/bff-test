@@ -6,10 +6,12 @@ export class RobotManager {
   constructor(private readonly tarpAPI: TarpAPI) {}
 
   async go({
+    roadMapId,
     robotKey,
     destinationId,
     callback,
   }: {
+    roadMapId: string;
     robotKey?: string;
     destinationId: string;
     callback?: () => void;
@@ -18,7 +20,7 @@ export class RobotManager {
     const {
       data: { createMission: createdMissionId },
     } = await this.tarpAPI.createMission({
-      roadMapId: 'b35684f4-eee8-4b38-8c2e-87e05feea0ac',
+      roadMapId,
       request: {
         robotKey,
         priority: 0,
